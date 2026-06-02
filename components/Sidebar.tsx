@@ -44,41 +44,16 @@ const Sidebar: React.FC<SidebarProps> = ({
           <Zap className="text-white" size={24} />
         </div>
         <div>
-          <h1 className="text-xl font-bold tracking-tight">ToolpathViz Pro</h1>
-          <p className="text-xs text-zinc-500 uppercase tracking-widest font-semibold text-blue-500">JSON Additive Mode</p>
+          <h1 className="text-xl font-bold tracking-tight">XtreeE Toolpath Visualizer</h1>
+          <p className="text-xs text-zinc-500 uppercase tracking-widest font-semibold text-blue-500">JSON toolpath</p>
         </div>
       </div>
 
       <section className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-4">
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Database size={14} className="text-zinc-400" />
-            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider font-mono">Sample Models</h2>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {toolpathDatabase.map((item) => {
-              const isSelected = data?.objectInfo?.ObjectName === item.data.ObjectInfo.ObjectName;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => onSelectTemplate(item.data)}
-                  className={`px-3 py-2 text-[10px] font-bold uppercase rounded border transition-all ${
-                    isSelected
-                      ? 'bg-blue-600/10 border-blue-500 text-blue-400 shadow-[0_0_12px_rgba(37,99,235,0.15)]'
-                      : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:bg-zinc-700 hover:text-zinc-200'
-                  }`}
-                >
-                  {item.name}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
         <div className="border-t border-zinc-800 pt-3">
           <div className="flex items-center gap-2 mb-3">
             <Upload size={14} className="text-zinc-400" />
-            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider font-mono">Custom JSON</h2>
+            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider font-mono">XtreeE toolpath</h2>
           </div>
           <label className="flex flex-col items-center justify-center w-full h-14 border border-dashed border-zinc-700 rounded-lg cursor-pointer hover:bg-zinc-800/40 hover:border-blue-500/50 transition-all group">
             <p className="text-[10px] text-zinc-500 font-semibold group-hover:text-zinc-300">Click to upload JSON file</p>
@@ -105,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div>
           <h2 className="text-sm font-semibold text-zinc-400 mb-3 uppercase tracking-wider font-mono">Playback</h2>
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={() => setIsPlaying(!isPlaying)}
               disabled={!data}
               className="p-3 bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-800 disabled:text-zinc-600 rounded-full transition-all flex-shrink-0"
@@ -113,7 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               {isPlaying ? <Pause size={20} /> : <Play size={20} />}
             </button>
             <div className="flex-1">
-              <input 
+              <input
                 type="range" min="0" max="1" step="0.001" value={progress}
                 disabled={!data}
                 onChange={(e) => setProgress(parseFloat(e.target.value))}
@@ -137,11 +112,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                 key={mode}
                 onClick={() => setColorMode(mode)}
                 disabled={!data}
-                className={`px-2 py-1.5 text-[10px] font-bold uppercase rounded border transition-all ${
-                  colorMode === mode 
-                    ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_10px_rgba(37,99,235,0.4)]' 
+                className={`px-2 py-1.5 text-[10px] font-bold uppercase rounded border transition-all ${colorMode === mode
+                    ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_10px_rgba(37,99,235,0.4)]'
                     : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:bg-zinc-700'
-                } disabled:opacity-30 disabled:cursor-not-allowed`}
+                  } disabled:opacity-30 disabled:cursor-not-allowed`}
               >
                 {mode === 'none' ? 'Default' : mode.replace(/Rate/, ' Rate')}
               </button>
