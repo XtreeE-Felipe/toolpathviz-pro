@@ -1,0 +1,8 @@
+{
+  "name": "ToolpathViz Pro",
+  "description": "A high-performance 3D toolpath visualizer and analyzer. Upload G-code files to visualize robot or 3D printer paths in real-time and get Gemini-powered optimization insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
