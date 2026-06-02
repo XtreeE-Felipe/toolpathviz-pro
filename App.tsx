@@ -3,10 +3,18 @@ import React, { useState, useCallback } from 'react';
 import Sidebar from './components/Sidebar';
 import Visualizer from './components/Visualizer';
 import { parseToolpathJson } from './services/gcodeParser';
+import { toolpathDatabase } from './services/databaseService';
 import { ToolpathData, ColorMode } from './types';
 
 const App: React.FC = () => {
-  const [data, setData] = useState<ToolpathData | null>(null);
+  const [data, setData] = useState<ToolpathData | null>(() => {
+    try {
+      return parseToolpathJson(toolpathDatabase[0].data);
+    } catch (err) {
+      console.error("Failed to load default template:", err);
+      return null;
+    }
+  });
   const [progress, setProgress] = useState(1);
   const [colorMode, setColorMode] = useState<ColorMode>('none');
 
@@ -38,10 +46,15 @@ const App: React.FC = () => {
     reader.readAsText(file);
   }, []);
 
+  const handleSelectTemplate = useCallback((json: any) => {
+    handleLoadData(json);
+  }, []);
+
   return (
     <div className="flex w-full h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-blue-500/30">
       <Sidebar 
         onFileUpload={handleFileUpload}
+        onSelectTemplate={handleSelectTemplate}
         data={data}
         progress={progress}
         setProgress={setProgress}

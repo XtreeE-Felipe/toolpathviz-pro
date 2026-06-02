@@ -1,10 +1,12 @@
 
 import React, { useState } from 'react';
-import { Upload, Play, Pause, Zap, Box, Palette, User, Calendar } from 'lucide-react';
+import { Upload, Play, Pause, Zap, Box, Palette, User, Calendar, Database } from 'lucide-react';
 import { ToolpathData, ColorMode } from '../types';
+import { toolpathDatabase } from '../services/databaseService';
 
 interface SidebarProps {
   onFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSelectTemplate: (json: any) => void;
   data: ToolpathData | null;
   progress: number;
   setProgress: (p: number) => void;
@@ -14,6 +16,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({
   onFileUpload,
+  onSelectTemplate,
   data,
   progress,
   setProgress,
@@ -46,15 +49,42 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      <section className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <Upload size={14} className="text-zinc-500" />
-          <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider font-mono">External Load</h2>
+      <section className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-4">
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Database size={14} className="text-zinc-400" />
+            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider font-mono">Sample Models</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {toolpathDatabase.map((item) => {
+              const isSelected = data?.objectInfo?.ObjectName === item.data.ObjectInfo.ObjectName;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onSelectTemplate(item.data)}
+                  className={`px-3 py-2 text-[10px] font-bold uppercase rounded border transition-all ${
+                    isSelected
+                      ? 'bg-blue-600/10 border-blue-500 text-blue-400 shadow-[0_0_12px_rgba(37,99,235,0.15)]'
+                      : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:bg-zinc-700 hover:text-zinc-200'
+                  }`}
+                >
+                  {item.name}
+                </button>
+              );
+            })}
+          </div>
         </div>
-        <label className="flex flex-col items-center justify-center w-full h-16 border-2 border-dashed border-zinc-700 rounded-lg cursor-pointer hover:bg-zinc-800/50 hover:border-blue-500 transition-all group">
-          <p className="text-[11px] text-zinc-500 font-semibold">Click to upload custom JSON</p>
-          <input type="file" className="hidden" accept=".json" onChange={onFileUpload} />
-        </label>
+
+        <div className="border-t border-zinc-800 pt-3">
+          <div className="flex items-center gap-2 mb-3">
+            <Upload size={14} className="text-zinc-400" />
+            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider font-mono">Custom JSON</h2>
+          </div>
+          <label className="flex flex-col items-center justify-center w-full h-14 border border-dashed border-zinc-700 rounded-lg cursor-pointer hover:bg-zinc-800/40 hover:border-blue-500/50 transition-all group">
+            <p className="text-[10px] text-zinc-500 font-semibold group-hover:text-zinc-300">Click to upload JSON file</p>
+            <input type="file" className="hidden" accept=".json" onChange={onFileUpload} />
+          </label>
+        </div>
       </section>
 
       {data && (
