@@ -130,8 +130,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => setColorMode(mode)}
                 disabled={!data}
                 className={`px-2 py-1.5 text-[10px] font-bold uppercase rounded border transition-all ${colorMode === mode
-                    ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_10px_rgba(37,99,235,0.4)]'
-                    : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:bg-zinc-700'
+                  ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_10px_rgba(37,99,235,0.4)]'
+                  : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:bg-zinc-700'
                   } disabled:opacity-30 disabled:cursor-not-allowed`}
               >
                 {mode === 'none' ? 'Default' : mode.replace(/Rate/, ' Rate')}
