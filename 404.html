@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=./index.html" />
+  <script>
+    // If someone lands on a route like /path, redirect to index.html preserving the path for client-side router
+    const base = location.pathname.replace(/\/[^\/]*$/, '/');
+    const target = base + 'index.html';
+    // Use history.replaceState to keep original URL after SPA loads
+    location.replace(target);
+  </script>
+  <title>Redirecting...</title>
+</head>
+<body>
+  <p>Redirecting to the application...</p>
+</body>
+</html>
