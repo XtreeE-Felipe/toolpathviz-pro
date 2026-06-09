@@ -37,6 +37,19 @@ const Sidebar: React.FC<SidebarProps> = ({
     return () => clearInterval(interval);
   }, [isPlaying, progress, setProgress]);
 
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      // Create a synthetic change event to reuse existing onFileUpload handler
+      const syntheticEvent = {
+        target: { files: [file] },
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      onFileUpload(syntheticEvent);
+    }
+  };
+
   return (
     <div className="w-96 h-full flex flex-col gap-4 p-4 bg-zinc-950 border-r border-zinc-800 overflow-y-auto">
       <div className="flex items-center gap-3 mb-2">
@@ -55,8 +68,12 @@ const Sidebar: React.FC<SidebarProps> = ({
             <Upload size={14} className="text-zinc-400" />
             <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider font-mono">XtreeE toolpath</h2>
           </div>
-          <label className="flex flex-col items-center justify-center w-full h-14 border border-dashed border-zinc-700 rounded-lg cursor-pointer hover:bg-zinc-800/40 hover:border-blue-500/50 transition-all group">
-            <p className="text-[10px] text-zinc-500 font-semibold group-hover:text-zinc-300">Click to upload JSON file</p>
+          <label
+            className="flex flex-col items-center justify-center w-full h-14 border border-dashed border-zinc-700 rounded-lg cursor-pointer hover:bg-zinc-800/40 hover:border-blue-500/50 transition-all group"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDrop}
+          >
+            <p className="text-[10px] text-zinc-500 font-semibold group-hover:text-zinc-300">Drag and drop JSON file here or click to upload</p>
             <input type="file" className="hidden" accept=".json" onChange={onFileUpload} />
           </label>
         </div>
@@ -81,7 +98,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <h2 className="text-sm font-semibold text-zinc-400 mb-3 uppercase tracking-wider font-mono">Playback</h2>
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={() => { if (progress >= 1) { setProgress(0); setIsPlaying(true); } else { setIsPlaying(!isPlaying); } }}
               disabled={!data}
               className="p-3 bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-800 disabled:text-zinc-600 rounded-full transition-all flex-shrink-0"
             >
